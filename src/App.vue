@@ -1,20 +1,30 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <GridView :data="data"/>
     <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
+import GridView from './components/GridView.vue';
 
-@Component({
+export default Vue.extend({
+  data(){
+    return{
+      data:{
+        name: "Apple" as string
+      }
+    }
+  },
+  name: 'App',
   components: {
     HelloWorld,
-  },
-})
-export default class App extends Vue {}
+    GridView
+  }
+},
+);
 </script>
 
 <style lang="scss">
