@@ -1,16 +1,14 @@
 <template>
     <div>
         <h2>Grid View</h2>
-        <p>{{data.name}}</p>
+        <p>{{data}}</p>
     </div>
 </template>
-<script lang="ts">
-import Vue from 'vue';
+<script setup lang="ts">
+import {defineProps} from 'vue';
 
-export default Vue.extend({
-  name: 'GridView',
-  props: {
-    data: Object,
-  },
-});
+const props = defineProps({
+    data:String
+})
+
 </script>

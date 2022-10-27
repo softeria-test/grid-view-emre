@@ -4,15 +4,13 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import Vue from 'vue';
+import {defineProps} from 'vue';
 
-export default Vue.extend({
-  name: 'HelloWorld',
-  props: {
-    msg: String,
-  },
-});
+const props = defineProps({
+    msg:String
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

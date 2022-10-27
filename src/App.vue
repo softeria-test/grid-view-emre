@@ -1,30 +1,17 @@
 <template>
   <div id="app">
     <GridView :data="data"/>
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App With Composition Api"/>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
+<script setup lang="ts">
+import {ref} from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
 import GridView from './components/GridView.vue';
+const data = ref("Apple")
 
-export default Vue.extend({
-  data(){
-    return{
-      data:{
-        name: "Apple" as string
-      }
-    }
-  },
-  name: 'App',
-  components: {
-    HelloWorld,
-    GridView
-  }
-},
-);
+
 </script>
 
 <style lang="scss">
