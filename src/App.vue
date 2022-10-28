@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <GridView :data="data"/>
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App With Composition Api"/>
+    <!--<HelloWorld msg="Welcome to Your Vue.js + TypeScript App With Composition Api"/> -->
   </div>
 </template>
 
@@ -10,8 +10,6 @@ import {ref} from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
 import GridView from './components/GridView.vue';
 const data = ref("Apple")
-
-
 </script>
 
 <style lang="scss">
