@@ -22,25 +22,13 @@
       </tr>
 
         <tr v-for="(row, rowIndex) in table" :key="rowIndex" class="collapse level1">
-          <td>{{row}}</td>
-          <td>as</td>
-          <td><span class="toggle"></span>Feenex, Inc.</td>
-          <td>United States</td>
-          <td>Subsy</td>
+          <td>{{row.cells[0]}}</td>
+          <td>{{row.cells[1]}}</td>
+          <td><span class="toggle"></span>{{row.cells[2]}}</td>
+          <td>{{row?.cells[3] || ""}}</td>
+          <td>{{row?.cells[4] || ""}}</td>
            <!-- <td>⚠</td> -->
-           
         </tr>
-
-        <tr v-for=" n in 10 " :key="n">
-          <td>{{n}}</td>
-          <td>{{n}}</td>
-          <td>{{n}}</td>
-          <td>{{n}}</td>
-          <td>{{n}}</td>
-        </tr>
-        
-      
-      
 
     </tbody>
     </table>
@@ -58,13 +46,13 @@ const props = defineProps({
 const isHeader = (row:object):boolean => true;
 const isHidden = (row:object, colIndex:object):boolean => true;
 const colspan = (row:object):boolean => true;
-let table: [] = [];
-fetch('http://localhost:3000/data')
-.then((response) => response.json()).then(data => {
-  table = data.tables.main.data.rows;
-  console.log(data.tables.main.data.rows);
-})
-
+let table = ref(null);
+  fetch('http://localhost:3000/data')
+  .then((response) => response.json()).then(data => {
+    table.value = data.tables.main.data.rows;
+    console.log(data.tables.main.data.rows);
+    console.log(table);
+  })
 </script>
 
 <style scoped lang="scss">
