@@ -20,22 +20,51 @@
         <td>Public Company</td>
         <td>⚠</td>
       </tr>
-      <GridViewItem/>
-      <GridViewItem/>
-      <GridViewItem/>
-      <GridViewItem/>
+
+        <tr v-for="(row, rowIndex) in table" :key="rowIndex" class="collapse level1">
+          <td>{{row}}</td>
+          <td>as</td>
+          <td><span class="toggle"></span>Feenex, Inc.</td>
+          <td>United States</td>
+          <td>Subsy</td>
+           <!-- <td>⚠</td> -->
+           
+        </tr>
+
+        <tr v-for=" n in 10 " :key="n">
+          <td>{{n}}</td>
+          <td>{{n}}</td>
+          <td>{{n}}</td>
+          <td>{{n}}</td>
+          <td>{{n}}</td>
+        </tr>
+        
+      
+      
+
     </tbody>
     </table>
   </div>
   </div>
 </template>
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { defineProps,onMounted, ref } from "vue";
 import GridViewItem from "./GridViewItem.vue";
 
 const props = defineProps({
   data: String,
 });
+
+const isHeader = (row:object):boolean => true;
+const isHidden = (row:object, colIndex:object):boolean => true;
+const colspan = (row:object):boolean => true;
+let table: [] = [];
+fetch('http://localhost:3000/data')
+.then((response) => response.json()).then(data => {
+  table = data.tables.main.data.rows;
+  console.log(data.tables.main.data.rows);
+})
+
 </script>
 
 <style scoped lang="scss">
