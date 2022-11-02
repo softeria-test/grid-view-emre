@@ -13,7 +13,7 @@
         <th>Entity Type</th>
         <th>Content Flags</th>
       </tr>
-      <tr data-depth="0" class="collapse level0">
+      <tr data-depth="0">
         <td>0123456789</td>
         <td><span class="toggle collapse"></span>Apple, Inc.</td>
         <td>United States</td>
@@ -21,7 +21,7 @@
         <td>⚠</td>
       </tr>
 
-        <tr v-for="(row, rowIndex) in table" :key="rowIndex" class="collapse level1">
+        <tr v-for="(row, rowIndex) in table" :key="rowIndex">
           <td>{{row.cells[0]}}</td>
           <td>{{row.cells[1]}}</td>
           <td><span class="toggle"></span>{{row.cells[2]}}</td>
@@ -29,7 +29,6 @@
           <td>{{row?.cells[4] || ""}}</td>
            <!-- <td>⚠</td> -->
         </tr>
-
     </tbody>
     </table>
   </div>
@@ -69,10 +68,10 @@ let table = ref(null);
       background-color:lightgrey ;
       align-self: center;
     }
-    #mytable th{
+    table th{
       width: 140px;
     }
-    #mytable tr:nth-child(even) {
+    table tr:nth-child(even) {
     background-color:white;
     }
 
