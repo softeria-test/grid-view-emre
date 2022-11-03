@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    <GridTable/>
-    
+    <GridTable />
   </div>
 </template>
 
 <script setup lang="ts">
-import GridTable from './components/GridTable.vue';
+import GridTable from "./components/GridTable.vue";
 </script>
 
 <style lang="scss">
