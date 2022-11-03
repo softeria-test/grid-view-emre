@@ -4,6 +4,7 @@
       GridTable
     </caption>
     <th></th>
+
     <tr
       v-for="(row, rowIndex) in table"
       :key="rowIndex"
@@ -31,6 +32,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+
 const isHeader = (row: any): boolean => {
   return row.rowType === "Header";
 };
@@ -51,6 +53,7 @@ const groupLevel = (row: any, colIndex: number): string => {
 };
 
 let table = ref(null) as any;
+
 fetch("http://localhost:3000/data")
   .then((response) => response.json())
   .then((data) => {
@@ -58,6 +61,7 @@ fetch("http://localhost:3000/data")
     console.log(data.tables.main.data.rows);
     console.log(table);
   });
+
 
 const alignment = (row: any, colIndex: number, type: string): string => {
   return type === "vertical" ? "baseline" as const : "left" as const;
@@ -88,6 +92,7 @@ tr {
 table th {
   width: 140px;
 }
+
 
 table tr:nth-child(even) {
   background-color: white;
