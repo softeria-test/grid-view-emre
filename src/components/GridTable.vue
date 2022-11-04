@@ -4,6 +4,7 @@
       GridTable
     </caption>
     <th></th>
+
     <tr
       v-for="(row, rowIndex) in table"
       :key="rowIndex"
@@ -52,11 +53,13 @@ const groupLevel = (row: any, colIndex: number): string => {
 };
 
 let table = ref(null) as any;
+
 fetch("http://localhost:3000/data")
   .then((response) => response.json())
   .then((data) => {
     table.value = data.tables.main.data.rows;
   });
+
 
 const alignment = (row: any, colIndex: number, type: string): string => {
   return type === "vertical" ? "baseline" as const : "left" as const;
@@ -87,6 +90,7 @@ tr {
 table th {
   width: 140px;
 }
+
 
 table tr:nth-child(even) {
   background-color: white;

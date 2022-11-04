@@ -32,6 +32,7 @@
         </tbody>
       </table>
     </div>
+
   </div>
 </template>
 <script setup lang="ts">
@@ -61,3 +62,4 @@ table tr:nth-child(even) {
   background-color: white;
 }
 </style>
+
