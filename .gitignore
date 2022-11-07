@@ -2,6 +2,7 @@
 node_modules
 /dist
 .scannerwork/
+.yarn/
 
 # local env files
 .env.local
