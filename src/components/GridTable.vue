@@ -11,7 +11,7 @@
       v-bind:class="{ header: isHeader(row) }"
     >
       <td
-        v-for="(value, colIndex) in filteredCells(row.cells, rowIndex)"
+        v-for="(value, colIndex) in filteredCells(row.cells)"
         :key="colIndex"
         v-bind:rowspan="rowspan(row, colIndex)"
         v-bind:colspan="colspan(row, colIndex)"
@@ -21,7 +21,7 @@
         }"
       >
         <div
-          v-bind:style="{ 'padding-left': groupLevel(row, colIndex) + 'em' }"
+          v-bind:style="{ 'padding-left': groupLevel(row) + 'em' }"
         >
           {{ value }}
         </div>
@@ -30,25 +30,31 @@
   </table>
 </template>
 <script setup lang="ts">
+/* eslint-enable @typescript-eslint/no-explicit-any */
 import { ref } from "vue";
+interface Row {
+  cells: object,
+  headerCellDetails: any,
+  rowType: string,
+  cellDetails: any
+}
 
-
-const isHeader = (row: any): boolean => {
+const isHeader = (row: Row): boolean => {
   return row.rowType === "Header";
 };
-const isHidden = (value?: any, rowIndex?: number): boolean => {
+const isHidden = (): boolean => {
   return false;
 };
 
-const colspan = (row: any, colIndex: number): number => {
+const colspan = (row: Row, colIndex: number): number => {
   return row.headerCellDetails?.[colIndex].colspan ?? 1;
 };
 
-const rowspan = (row: any, colIndex: number): number => {
+const rowspan = (row: Row, colIndex: number): number => {
   return row.headerCellDetails?.[colIndex].rowspan ?? 1;
 };
 
-const groupLevel = (row: any, colIndex: number): string => {
+const groupLevel = (row: Row): string => {
   return row.cellDetails?.[0].groupLevel ?? 0;
 };
 
@@ -61,12 +67,12 @@ fetch("http://localhost:3000/data")
   });
 
 
-const alignment = (row: any, colIndex: number, type: string): string => {
+const alignment = (row?: Row, colIndex?: number, type?: string): string => {
   return type === "vertical" ? "baseline" as const : "left" as const;
 };
 
-const filteredCells = (cells: any, rowIndex: number) => {
-  return cells.filter((item: any) => !isHidden(item, rowIndex));
+const filteredCells = (cells: any) => {
+  return cells.filter(() => !isHidden());
 };
 </script>
 
