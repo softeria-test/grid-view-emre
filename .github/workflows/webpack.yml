@@ -1,0 +1,29 @@
+name: Yarn test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+    
+    steps:
+    - uses: actions/checkout@v3
+    - uses: borales/actions-yarn@v3.0.0
+      with:
+        cmd: install # will run `yarn install` command
+    - uses: borales/actions-yarn@v3.0.0
+      with:
+        cmd: build # will run `yarn build` command
+    - uses: borales/actions-yarn@v3.0.0
+      with:
+        cmd: test # will run `yarn test` command
+
+
