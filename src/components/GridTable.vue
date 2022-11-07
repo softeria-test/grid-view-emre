@@ -33,12 +33,21 @@
 /* eslint-enable @typescript-eslint/no-explicit-any */
 import { ref } from "vue";
 
+type CellDetails = {
+  groupLevel: number
+}
+type HeaderCellDetails = {
+  rowspan: number,
+  colspan: number,
+  columnIndex: number,
+  source: string
+}
 
-interface Row {
-  cells: object,
-  headerCellDetails: object | any,
-  rowType: string,
-  cellDetails: object | any
+type Row = {
+  cells: string[],
+  headerCellDetails?: HeaderCellDetails[] ,
+  rowType?: string,
+  cellDetails?: CellDetails[],
 }
 
 const isHeader = (row: Row): boolean => {
@@ -56,11 +65,13 @@ const rowspan = (row: Row, colIndex: number): number => {
   return row.headerCellDetails?.[colIndex].rowspan ?? 1;
 };
 
-const groupLevel = (row: Row): string => {
+const groupLevel = (row: Row): number => {
   return row.cellDetails?.[0].groupLevel ?? 0;
 };
 
-let table = ref(null) as any;
+
+
+let table = ref(null);
 
 fetch("http://localhost:3000/data")
   .then((response) => response.json())
@@ -73,7 +84,7 @@ const alignment = (row?: Row, colIndex?: number, type?: string): string => {
   return type === "vertical" ? "baseline" as const : "left" as const;
 };
 
-const filteredCells = (cells: any) => {
+const filteredCells = (cells: string[]):string[] => {
   return cells.filter(() => !isHidden());
 };
 </script>
