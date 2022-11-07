@@ -32,11 +32,13 @@
 <script setup lang="ts">
 /* eslint-enable @typescript-eslint/no-explicit-any */
 import { ref } from "vue";
+
+
 interface Row {
   cells: object,
-  headerCellDetails: any,
+  headerCellDetails: object | any,
   rowType: string,
-  cellDetails: any
+  cellDetails: object | any
 }
 
 const isHeader = (row: Row): boolean => {

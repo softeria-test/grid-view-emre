@@ -73,5 +73,6 @@
   ],
   "jest": {
     "preset": "@vue/cli-plugin-unit-jest/presets/typescript-and-babel"
-  }
+  },
+  "packageManager": "yarn@3.2.4"
 }
