@@ -1,16 +1,13 @@
 <template>
   <div id="app">
-    <GridTable/>
-    <!-- <GridView :data="data"/> -->
-    <!--<HelloWorld msg="Welcome to Your Vue.js + TypeScript App With Composition Api"/> -->
+    <GridTable />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
-import GridView from './components/GridView.vue';
-import GridTable from './components/GridTable.vue';
+
+import GridTable from "./components/GridTable.vue";
+
 </script>
 
 <style lang="scss">

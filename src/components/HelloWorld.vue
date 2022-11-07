@@ -5,10 +5,10 @@
 </template>
 
 <script setup lang="ts">
-import {defineProps} from 'vue';
+import { defineProps } from "vue";
 const props = defineProps({
-    msg:String
-})
+  msg: String,
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

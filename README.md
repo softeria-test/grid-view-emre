@@ -1,11 +1,16 @@
 # grid-view
+Grid Table Test Project with Vue2, Composition Api, TypeScript, Sonarqube, Jest
 
 ## Project setup
 ```
 yarn install
 ```
+#### Start JSON Server
+```
+json-server --watch db.json
+```
 
-### Compiles and hot-reloads for development
+#### Compiles and hot-reloads for development
 ```
 yarn serve
 ```
