@@ -75,8 +75,17 @@
   ],
   "jest": {
     "preset": "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
+    "verbose": true,
     "collectCoverage": true,
-    "collectCoverageFrom" : ["src/**/*.vue","src/*.vue"]
+    "coverageProvider": "v8",
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
     
   },
   "packageManager": "yarn@3.2.4"

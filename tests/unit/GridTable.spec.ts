@@ -8,23 +8,22 @@ import stach from '@/stach-sdk/stach'
 
 describe('GridTable.vue', () => {
   type IRow =
-  | stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow[]
-  | null
-  | undefined;
-    const table = ref<IRow>();
-    let wrapper:Wrapper<Vue>;
-    
-    beforeEach(() => {
-      const pkg =
+    | stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow[]
+    | null
+    | undefined;
+  const table = ref<IRow>();
+  let wrapper: Wrapper<Vue>;
+
+  beforeEach(() => {
+    const pkg =
       stach.factset.protobuf.stach.v2.RowOrganizedPackage.create(db.data as unknown as stach.factset.protobuf.stach.v2.RowOrganizedPackage);
-      table.value = pkg.tables.main.data?.rows;
-      
-        wrapper = shallowMount(GridTable, {
-          propsData:{table}
-        });
+    table.value = pkg.tables.main.data?.rows;
+
+    wrapper = shallowMount(GridTable, {
+      propsData: { table }
     });
-    // type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow ;
-    // let row:Row ;
+  });
+
   it('renders Grid Table', () => {
     expect(wrapper.text()).toContain("GridTable")
   })
@@ -49,8 +48,8 @@ describe('GridTable.vue', () => {
   it('check td is td ', () => {
     expect(wrapper.findAll('td').at(2).exists()).toBe(true)
   })
-  
 
-  
+
+
 
 })
