@@ -32,26 +32,12 @@
 <script setup lang="ts">
 /* eslint-enable @typescript-eslint/no-explicit-any */
 import { ref } from "vue";
+import stach from "../stach-sdk/stach"
 
-type CellDetails = {
-  groupLevel: number
-}
-type HeaderCellDetails = {
-  rowspan: number,
-  colspan: number,
-  columnIndex: number,
-  source: string
-}
-
-type Row = {
-  cells: string[],
-  headerCellDetails?: HeaderCellDetails[] ,
-  rowType?: string,
-  cellDetails?: CellDetails[],
-}
+type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow
 
 const isHeader = (row: Row): boolean => {
-  return row.rowType === "Header";
+  return row.rowType === stach.factset.protobuf.stach.v2.RowOrganizedPackage.Row.RowType.Header;
 };
 const isHidden = (): boolean => {
   return false;
