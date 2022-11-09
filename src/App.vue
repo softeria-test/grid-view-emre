@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 
-import GridTable from "./components/GridTable.vue";
+import GridTable from "./components/GridTable.vue"; // NOSONAR
 
 </script>
 

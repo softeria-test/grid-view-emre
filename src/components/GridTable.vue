@@ -21,7 +21,9 @@
         }"
       >
         <div
-          v-bind:style="{ 'padding-left': groupLevel(row) + 'em' }"
+          v-bind:style="{
+            'padding-left': groupLevel(row, parseInt(colIndex)) + 'em',
+          }"
         >
           {{ value }}
         </div>
@@ -30,48 +32,54 @@
   </table>
 </template>
 <script setup lang="ts">
-/* eslint-enable @typescript-eslint/no-explicit-any */
-import { ref } from "vue";
-import stach from "../stach-sdk/stach"
+import { reactive, ref } from "vue";
+import stach from "../stach-sdk/stach";
 
-type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow
+type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow;
+type IListValue = stach.google.protobuf.IListValue | null
+type IRow = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow[] | null | undefined
+let table = ref<IRow>();
 
-const isHeader = (row: Row): boolean => {
-  return row.rowType === stach.factset.protobuf.stach.v2.RowOrganizedPackage.Row.RowType.Header;
-};
-const isHidden = (): boolean => {
-  return false;
-};
-
-const colspan = (row: Row, colIndex: number): number => {
-  return row.headerCellDetails?.[colIndex].colspan ?? 1;
-};
-
-const rowspan = (row: Row, colIndex: number): number => {
-  return row.headerCellDetails?.[colIndex].rowspan ?? 1;
-};
-
-const groupLevel = (row: Row): number => {
-  return row.cellDetails?.[0].groupLevel ?? 0;
-};
-
-
-
-let table = ref(null);
-
+// fetch data from the server
 fetch("http://localhost:3000/data")
   .then((response) => response.json())
   .then((data) => {
-    table.value = data.tables.main.data.rows;
+    const pkg =
+      stach.factset.protobuf.stach.v2.RowOrganizedPackage.create(data);
+    table.value = pkg.tables.main.data?.rows;
+
   });
 
-
-const alignment = (row?: Row, colIndex?: number, type?: string): string => {
-  return type === "vertical" ? "baseline" as const : "left" as const;
+// isHeader checks if the row is a header row
+const isHeader = (row?: Row): boolean => {
+  return row?.rowType === ("Header" as Row);
 };
 
-const filteredCells = (cells: string[]):string[] => {
-  return cells.filter(() => !isHidden());
+// colspan returns the colspan for the cell at the given row and column index
+const colspan = (row: Row, colIndex: string): number => {
+  return row.headerCellDetails?.[colIndex].colspan ?? 1;
+};
+
+// rowspan returns the rowspan for the cell at the given row and column index
+const rowspan = (row: Row, colIndex: string): number => {
+  return row.headerCellDetails?.[colIndex].rowspan ?? 1;
+};
+
+// groupLevel returns the group level for the cell at the given row and column index
+function groupLevel(row: Row, colIndex: number): number {
+  console.log(colIndex, row.cellDetails?.[0].groupLevel);
+  return colIndex === 0 ? row.cellDetails?.[0].groupLevel ?? 0 : 0;
+}
+
+// alignment returns the alignment for the cell at the given row and column index and the given alignment type
+const alignment = (row?: Row, colIndex?: string, type?: string): string => {
+  return type === "vertical" ? ("baseline" as const) : ("left" as const);
+};
+
+const filteredCells = (
+  cells?: IListValue
+): IListValue | undefined => {
+  return cells;
 };
 </script>
 
@@ -95,7 +103,6 @@ tr {
 table th {
   width: 140px;
 }
-
 
 table tr:nth-child(even) {
   background-color: white;
