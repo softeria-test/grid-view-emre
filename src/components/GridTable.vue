@@ -32,12 +32,16 @@
   </table>
 </template>
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import stach from "../stach-sdk/stach";
 
 type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow;
-type IListValue = stach.google.protobuf.IListValue | null
-type IRow = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow[] | null | undefined
+type IListValue = stach.google.protobuf.IListValue | null;
+type IRow =
+  | stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow[]
+  | null
+  | undefined;
+type RowType = stach.factset.protobuf.stach.v2.RowOrganizedPackage.Row.RowType;
 let table = ref<IRow>();
 
 // fetch data from the server
@@ -47,38 +51,29 @@ fetch("http://localhost:3000/data")
     const pkg =
       stach.factset.protobuf.stach.v2.RowOrganizedPackage.create(data);
     table.value = pkg.tables.main.data?.rows;
-
   });
 
 // isHeader checks if the row is a header row
-const isHeader = (row?: Row): boolean => {
-  return row?.rowType === ("Header" as Row);
-};
+const isHeader = (row?: Row): boolean =>
+  row?.rowType === ("Header" as unknown as RowType);
 
 // colspan returns the colspan for the cell at the given row and column index
-const colspan = (row: Row, colIndex: string): number => {
-  return row.headerCellDetails?.[colIndex].colspan ?? 1;
-};
+const colspan = (row: Row, colIndex: string): number =>
+  row.headerCellDetails?.[colIndex].colspan ?? 1;
 
 // rowspan returns the rowspan for the cell at the given row and column index
-const rowspan = (row: Row, colIndex: string): number => {
-  return row.headerCellDetails?.[colIndex].rowspan ?? 1;
-};
+const rowspan = (row: Row, colIndex: string): number =>
+  row.headerCellDetails?.[colIndex].rowspan ?? 1;
 
 // groupLevel returns the group level for the cell at the given row and column index
-function groupLevel(row: Row, colIndex: number): number {
-  console.log(colIndex, row.cellDetails?.[0].groupLevel);
-  return colIndex === 0 ? row.cellDetails?.[0].groupLevel ?? 0 : 0;
-}
+const groupLevel = (row: Row, colIndex: number): number =>
+  colIndex === 0 ? row.cellDetails?.[0].groupLevel ?? 0 : 0;
 
 // alignment returns the alignment for the cell at the given row and column index and the given alignment type
-const alignment = (row?: Row, colIndex?: string, type?: string): string => {
-  return type === "vertical" ? ("baseline" as const) : ("left" as const);
-};
+const alignment = (row?: Row, colIndex?: string, type?: string): string =>
+  type === "vertical" ? ("baseline" as const) : ("left" as const);
 
-const filteredCells = (
-  cells?: IListValue
-): IListValue | undefined => {
+const filteredCells = (cells?: IListValue): IListValue | undefined => {
   return cells;
 };
 </script>
