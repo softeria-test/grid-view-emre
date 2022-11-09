@@ -32,7 +32,7 @@
   </table>
 </template>
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import stach from "../stach-sdk/stach";
 
 type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow;
