@@ -30,11 +30,21 @@
   </table>
 </template>
 <script setup lang="ts">
-/* eslint-enable @typescript-eslint/no-explicit-any */
 import { ref } from "vue";
 import stach from "../stach-sdk/stach"
 
-type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow
+// type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow
+type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.Row
+let table = ref<stach.factset.protobuf.stach.v2.RowOrganizedPackage.ITableData| null | undefined>();
+
+// fetch data from the server
+fetch("http://localhost:3000/data")
+  .then((response) => response.json())
+  .then((data) => {
+    // table = data.tables.main.data.rows;
+    const pkg = stach.factset.protobuf.stach.v2.RowOrganizedPackage.create(data);
+    table.value = pkg.tables.main.data;
+  });
 
 const isHeader = (row: Row): boolean => {
   return row.rowType === stach.factset.protobuf.stach.v2.RowOrganizedPackage.Row.RowType.Header;
@@ -51,28 +61,20 @@ const rowspan = (row: Row, colIndex: number): number => {
   return row.headerCellDetails?.[colIndex].rowspan ?? 1;
 };
 
-const groupLevel = (row: Row): number => {
-  return row.cellDetails?.[0].groupLevel ?? 0;
+const groupLevel = (row: stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow | { [k: string]: stach.factset.protobuf.stach.v2.table.IMetadataItem; } | { [k: string]: stach.factset.protobuf.stach.v2.RowOrganizedPackage.IMapOfMetadata; } | null | undefined): number => {
+  // return row.cellDetails?.[0].groupLevel ?? 0;
+  return row?.cellDetails?.[0].groupLevel ?? 0;
+  
 };
 
-
-
-let table = ref(null);
-
-fetch("http://localhost:3000/data")
-  .then((response) => response.json())
-  .then((data) => {
-    table.value = data.tables.main.data.rows;
-  });
-
-
-const alignment = (row?: Row, colIndex?: number, type?: string): string => {
+const alignment = (row?: stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow[] | { [k: string]: stach.factset.protobuf.stach.v2.table.IMetadataItem; } | { [k: string]: stach.factset.protobuf.stach.v2.RowOrganizedPackage.IMapOfMetadata; } | null | undefined, colIndex?: number, type?: string): string => {
   return type === "vertical" ? "baseline" as const : "left" as const;
 };
-
-const filteredCells = (cells: string[]):string[] => {
+//get data from stach
+const filteredCells = (cells: string[]): string[] => {
   return cells.filter(() => !isHidden());
 };
+
 </script>
 
 <style lang="scss">
