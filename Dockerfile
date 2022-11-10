@@ -1,5 +1,6 @@
 FROM node
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 #  Tini to handle zombie processes
@@ -12,6 +13,9 @@ RUN \
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
 >>>>>>> 9026376 (Dockerize vue and sonarqube)
+=======
+
+>>>>>>> c27bef4 (issue #21 sonar scanner)
 USER node
 
 # Clone the repo
