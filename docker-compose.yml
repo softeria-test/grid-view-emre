@@ -1,0 +1,26 @@
+services:
+  node:
+    build: .
+    ports:
+    - 8000:8000
+    volumes:
+    - vol:/home/node/grid-view
+  sonarqube:
+    image: sonarqube
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    ports:
+      - 9000:9000
+  sonar-scanner:
+    image: sonarsource/sonar-scanner-cli
+    depends_on:
+      - node
+      - sonarqube
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=override-this-value-in-docker-compose.override.yml
+      - SONAR_LOGIN=override-this-value-in-docker-compose.override.yml
+    volumes:
+      - vol:/usr/src
+volumes:
+  vol:

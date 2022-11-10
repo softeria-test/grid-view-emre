@@ -3,6 +3,7 @@ node_modules
 /dist
 .scannerwork/
 .yarn/
+!.yarn/releases
 
 # local env files
 .env.local
