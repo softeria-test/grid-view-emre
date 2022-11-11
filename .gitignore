@@ -2,7 +2,14 @@
 node_modules
 /dist
 .scannerwork/
-.yarn/
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+docker-compose.override.yml
 
 # local env files
 .env.local
