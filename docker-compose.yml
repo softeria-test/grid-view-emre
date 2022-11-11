@@ -10,7 +10,6 @@ services:
   sonarqube:
     image: sonarqube
     init: true
-    tty: true
     environment:
       - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
     ports:

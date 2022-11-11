@@ -4,6 +4,7 @@ node_modules
 .scannerwork/
 .yarn/
 !.yarn/releases
+docker-compose.override.yml
 
 # local env files
 .env.local
