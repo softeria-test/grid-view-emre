@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Lint-test
 
 on:
   push:
@@ -14,6 +14,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
+        cache: 'yarn'
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -24,3 +25,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: yarn
     - run: yarn lint
+    - run: yarn test:unit
