@@ -12,7 +12,8 @@
   "dependencies": {
     "core-js": "^3.8.3",
     "csstype": "^3.1.1",
-    "json-server": "^0.17.0",
+    "jest-fetch-mock": "^3.0.3",
+    "json-server": "^0.17.1",
     "protobufjs": "^7.1.2",
     "sonarqube-scanner": "^2.8.2",
     "vue": "^2.6.14",
