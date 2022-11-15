@@ -8,7 +8,7 @@
     <tr
       v-for="(row, rowIndex) in table"
       :key="rowIndex"
-      v-bind:class="{ header: isHeader(row) }"
+      :class="{ header: isHeader(row) }"
     >
       <td
         v-for="(value, colIndex) in filteredCells(row.cells)"
@@ -31,52 +31,50 @@
     </tr>
   </table>
 </template>
-<script setup lang="ts">
-import { ref } from "vue";
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
 import stach from "../stach-sdk/stach";
-
 type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow;
-type IListValue = stach.google.protobuf.IListValue | null;
 type IRow =
   | stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow[]
   | null
   | undefined;
 type RowType = stach.factset.protobuf.stach.v2.RowOrganizedPackage.Row.RowType;
-let table = ref<IRow>();
 
-// fetch data from the server
-fetch("http://localhost:3000/data")
-  .then((response) => response.json())
-  .then((data) => {
-    const pkg =
-      stach.factset.protobuf.stach.v2.RowOrganizedPackage.create(data);
-    table.value = pkg.tables.main.data?.rows;
-  });
+@Component
+export default class GridTable extends Vue {
+  @Prop() private table!: IRow;
 
-// isHeader checks if the row is a header row
-const isHeader = (row?: Row): boolean =>
-  row?.rowType === ("Header" as unknown as RowType);
+  isHeader(row?: Row) {
+    return row?.rowType === ("Header" as unknown as RowType);
+  }
 
-// colspan returns the colspan for the cell at the given row and column index
-const colspan = (row: Row, colIndex: string): number =>
-  row.headerCellDetails?.[colIndex].colspan ?? 1;
+  // colspan returns the colspan for the cell at the given row and column index
+  colspan(row: Row, colIndex: string) {
+   return row.headerCellDetails?.[colIndex].colspan ?? 1;
+  }
 
-// rowspan returns the rowspan for the cell at the given row and column index
-const rowspan = (row: Row, colIndex: string): number =>
-  row.headerCellDetails?.[colIndex].rowspan ?? 1;
+  // rowspan returns the rowspan for the cell at the given row and column index
+  rowspan(row: Row, colIndex: string) {
+    return row.headerCellDetails?.[colIndex].rowspan ?? 1;
+  }
 
-// groupLevel returns the group level for the cell at the given row and column index
-const groupLevel = (row: Row, colIndex: number): number =>
-  colIndex === 0 ? row.cellDetails?.[0].groupLevel ?? 0 : 0;
+  // groupLevel returns the group level for the cell at the given row and column index
+  groupLevel(row: Row, colIndex: number) {
+    return colIndex === 0 ? row.cellDetails?.[0].groupLevel ?? 0 : 0;
+  }
 
-// alignment returns the alignment for the cell at the given row and column index and the given alignment type
-const alignment = (row?: Row, colIndex?: string, type?: string): string =>
-  type === "vertical" ? ("baseline" as const) : ("left" as const);
+  // alignment returns the alignment for the cell at the given row and column index and the given alignment type
+  alignment(row?: Row, colIndex?: string, type?: string) {
+    return type === "vertical" ? ("baseline" as const) : ("left" as const);
+  }
 
-const filteredCells = (cells?: IListValue): IListValue | undefined => {
-  return cells;
-};
+  filteredCells(cells?: Array<any>) {
+    return cells?.filter(_ => true);
+  }
+}
 </script>
+
 
 <style lang="scss">
 .header {
