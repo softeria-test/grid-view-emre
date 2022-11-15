@@ -14,7 +14,6 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        cache: 'yarn'
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -23,6 +22,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
     - run: yarn
     - run: yarn lint
     - run: yarn test:unit
