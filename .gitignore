@@ -10,6 +10,7 @@ node_modules
 !.yarn/versions
 .pnp.*
 docker-compose.override.yml
+coverage
 
 # local env files
 .env.local

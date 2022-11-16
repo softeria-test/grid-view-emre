@@ -47,7 +47,7 @@ describe('GridTable.vue', () => {
     expect(wrapper.find('table').exists()).toBe(true)
   })
   it('check td is td ', () => {
-    expect(wrapper.findAll('td').at(0).is('td')).toBe(true)
+    expect(wrapper.findAll('td').at(2).exists()).toBe(true)
   })
   
 
