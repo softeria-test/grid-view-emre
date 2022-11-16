@@ -77,7 +77,16 @@
     "preset": "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
     "verbose": true,
     "collectCoverage": true,
-    "coverageProvider": "v8"
+    "coverageProvider": "babel",
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    },
+    "collectCoverageFrom": ["!src/stach-sdk/stach.js","src/components/*"]
   },
   "packageManager": "yarn@3.2.4"
 }
