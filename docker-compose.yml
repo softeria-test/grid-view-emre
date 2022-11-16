@@ -1,19 +1,28 @@
 services:
   node:
     build: .
+<<<<<<< HEAD
     init: true
     tty: true
     ports:
     - 8080:8080
+=======
+    ports:
+    - 8000:8000
+>>>>>>> 9026376 (Dockerize vue and sonarqube)
     volumes:
     - vol:/home/node/grid-view
   sonarqube:
     image: sonarqube
+<<<<<<< HEAD
     init: true
+=======
+>>>>>>> 9026376 (Dockerize vue and sonarqube)
     environment:
       - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
     ports:
       - 9000:9000
+<<<<<<< HEAD
     networks:
       - sonarqube
   sonar-scanner:
@@ -24,13 +33,27 @@ services:
       - sonarqube
     volumes:
       - vol:/usr/src
+=======
+  sonar-scanner:
+    image: sonarsource/sonar-scanner-cli
+    depends_on:
+      - node
+      - sonarqube
+>>>>>>> 9026376 (Dockerize vue and sonarqube)
     environment:
       - SONAR_HOST_URL=http://sonarqube:9000
       - SONAR_SCANNER_OPTS=-Dsonar.projectKey=override-this-value-in-docker-compose.override.yml
       - SONAR_LOGIN=override-this-value-in-docker-compose.override.yml
+<<<<<<< HEAD
     networks:
       - sonarqube
 volumes:
   vol:
 networks:
   sonarqube:
+=======
+    volumes:
+      - vol:/usr/src
+volumes:
+  vol:
+>>>>>>> 9026376 (Dockerize vue and sonarqube)
