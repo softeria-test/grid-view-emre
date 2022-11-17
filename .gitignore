@@ -2,7 +2,6 @@
 node_modules
 /dist
 .scannerwork/
-<<<<<<< HEAD
 .yarn/*
 !.yarn/patches
 !.yarn/releases
@@ -12,10 +11,6 @@ node_modules
 .pnp.*
 docker-compose.override.yml
 coverage
-=======
-.yarn/
-!.yarn/releases
->>>>>>> 9026376 (Dockerize vue and sonarqube)
 
 # local env files
 .env.local
