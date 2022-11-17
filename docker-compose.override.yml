@@ -1,6 +1,0 @@
-services:
-  sonar-scanner:
-    environment:
-      - SONAR_HOST_URL=http://sonarqube:9000
-      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=grid-test
-      - SONAR_LOGIN=sqp_4018f419366a4c628ee9041bc90174781f626837
