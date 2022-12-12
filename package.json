@@ -74,7 +74,22 @@
     "not dead"
   ],
   "jest": {
-    "preset": "@vue/cli-plugin-unit-jest/presets/typescript-and-babel"
+    "preset": "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
+    "verbose": true,
+    "collectCoverage": true,
+    "coverageProvider": "babel",
+    "coverageThreshold": {
+      "global":{
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+
+      }
+    },
+    "collectCoverageFrom": ["src/components/*.vue"]
+    
+    
   },
   "packageManager": "yarn@3.2.4"
 }
