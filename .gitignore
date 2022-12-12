@@ -12,7 +12,6 @@ node_modules
 docker-compose.override.yml
 coverage
 
-
 # local env files
 .env.local
 .env.*.local
