@@ -20,7 +20,7 @@ describe('GridTable.vue', () => {
       stach.factset.protobuf.stach.v2.RowOrganizedPackage.create(db.data as unknown as stach.factset.protobuf.stach.v2.RowOrganizedPackage);
     table.value = pkg.tables.main.data?.rows;
 
-    wrapper = shallowMount(GridTable, {
+    wrapper = shallowMount(GridTable as any, {
       propsData: { table }
     });
   });
