@@ -33,12 +33,12 @@
     </tr>
   </table>
   <p v-show="false">
-  {{deneme}}
+  {{watch_val}}
   </p>
 </div>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { defineComponent, PropType, ref, watchEffect } from "vue";
 import stach from "../stach-sdk/stach";
 type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow;
 type IRow =
@@ -46,64 +46,76 @@ type IRow =
   | null
   | undefined;
 type RowType = stach.factset.protobuf.stach.v2.RowOrganizedPackage.Row.RowType;
+export default defineComponent({
+  props:{
+    table: Object as PropType<IRow>
+  },
 
-@Component({
-  watch:{
-    table :(newV)=>{
-      console.log(newV);
-    },
-    deneme: (n)=>{
-      console.log(n);
-    }
-  }
-})
-export default class GridTable extends Vue {
-  @Prop() private table!: IRow;
-
-  deneme = false
-  collapse(row?:Row|any,colIndex?:number){
+  setup(props){
+    const watch_val = ref(false);
+    watchEffect(()=>{
+      console.log(props.table);
+    })
+    const collapse = (row?:Row|any,colIndex?:number)=>{
     if(row.cellDetails?.[0].groupLevel === 1 && row.isOpen=== true){
-      this.deneme = !this.deneme
+      watch_val.value = !watch_val.value
       return false
     }
     return true
   }
-  isHeader(row?: Row) {
+
+    const isHeader = (row?: Row)=> {
     return row?.rowType === ("Header" as unknown as RowType);
   }
 
   // colspan returns the colspan for the cell at the given row and column index
-  colspan(row: Row, colIndex: string) {
+  const colspan = (row: Row, colIndex: string) =>{
    return row.headerCellDetails?.[colIndex].colspan ?? 1;
   }
 
   // rowspan returns the rowspan for the cell at the given row and column index
-  rowspan(row: Row, colIndex: string) {
+  const rowspan = (row: Row, colIndex: string) =>{
     return row.headerCellDetails?.[colIndex].rowspan ?? 1;
   }
 
   // groupLevel returns the group level for the cell at the given row and column index
-  groupLevel(row: Row, colIndex: number) {
+  const groupLevel = (row: Row, colIndex: number)=> {
     return colIndex === 0 ? row.cellDetails?.[0].groupLevel ?? 0 : 0;
   }
 
-  // alignment returns the alignment for the cell at the given row and column index and the given alignment type
-  alignment(row?: Row, colIndex?: string, type?: string) {
+  const alignment = (row?: Row, colIndex?: string, type?: string) =>{
     return type === "vertical" ? ("baseline" as const) : ("left" as const);
   }
-  show_button(row: Row, colIndex: number, rowIndex: number){
-    return this.groupLevel(row,colIndex) === 0 && colIndex === 0 && [0,1,2].includes(rowIndex) === false
+
+  const show_button = (row: Row, colIndex: number, rowIndex: number) =>{
+    return groupLevel(row,colIndex) === 0 && colIndex === 0 && [0,1,2].includes(rowIndex) === false
 
   }
-  toggle_isOpen(row:Row|any){
+  
+  const toggle_isOpen = (row:Row|any)=>{
     row.isOpen = !row.isOpen
-    this.deneme = !this.deneme
+    watch_val.value = !watch_val.value
     return row.isOpen
   }
-  filteredCells(cells?: Array<any>) {
+  const filteredCells = (cells?: Array<any>)=> {
     return cells?.filter(item => true);
   }
-}
+  return {
+    watch_val,
+    isHeader,
+    colspan,
+    rowspan,
+    groupLevel,
+    alignment,
+    show_button,
+    toggle_isOpen,
+    filteredCells,
+    collapse,
+  }
+
+  // end of setup
+  }
+})
 </script>
 
 
