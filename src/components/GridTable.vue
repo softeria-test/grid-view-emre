@@ -48,7 +48,7 @@ type IRow =
 type RowType = stach.factset.protobuf.stach.v2.RowOrganizedPackage.Row.RowType;
 export default defineComponent({
   props:{
-    table: Object as PropType<IRow>
+    table: Array as PropType<IRow>
   },
 
   setup(props){
