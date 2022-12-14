@@ -8,11 +8,14 @@
 import { ref } from "vue";
 import GridTable from "./components/GridTable.vue"; // NOSONAR
 import stach from "./stach-sdk";
+
 type IRow =
   | stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow[]
   | null
   | undefined;
+  
 const table = ref<IRow|any>();
+
 // fetch data from the server
 fetch("http://localhost:3000/data")
   .then((response) => response.json())

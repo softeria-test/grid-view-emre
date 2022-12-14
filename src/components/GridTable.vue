@@ -1,19 +1,18 @@
 <template>
 <div>
-  <table>
+  <table v-if="tempTable">
     <caption>
       GridTable
     </caption>
     <th></th>
 
     <tr
-      v-for="(row, rowIndex) in table"
+      v-for="(row, rowIndex) in tempTable"
       :key="rowIndex"
       :class="{ header: isHeader(row) }"
     >
       <td
         v-for="(value, colIndex) in filteredCells(row.cells)"
-        v-show="collapse(row)"
         :key="colIndex"
         v-bind:rowspan="rowspan(row, colIndex)"
         v-bind:colspan="colspan(row, colIndex)"
@@ -26,14 +25,14 @@
           v-bind:style="{
             'padding-left': groupLevel(row, parseInt(colIndex)) + 'em',
           }"
-        ><button v-if="show_button(row,parseInt(colIndex), rowIndex)" @click="toggle_isOpen(row)">{{ row.isOpen ? '-' : '+' }}</button>
+        ><button  v-if="show_button(row,parseInt(colIndex), rowIndex)" @click="toggle_isOpen(row,rowIndex)">{{ row.isOpen ? '-' : '+' }}</button>
           {{ value }}
         </div>
       </td>
     </tr>
   </table>
-  <p v-show="false">
-  {{watch_val}}
+  <p v-if="false">
+  {{watch_val}} 
   </p>
 </div>
 </template>
@@ -45,26 +44,34 @@ type IRow =
   | stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow[]
   | null
   | undefined;
+
 type RowType = stach.factset.protobuf.stach.v2.RowOrganizedPackage.Row.RowType;
 export default defineComponent({
   props:{
     table: Array as PropType<IRow>
   },
 
-  setup(props){
+  setup(props,context){
+    console.log("context",context);
+    console.log("props.table", props.table)
+    let tempTable= ref<IRow|any>([])
     const watch_val = ref(false);
-    watchEffect(()=>{
-      console.log(props.table);
-    })
-    const collapse = (row?:Row|any,colIndex?:number)=>{
-    if(row.cellDetails?.[0].groupLevel === 1 && row.isOpen=== true){
-      watch_val.value = !watch_val.value
-      return false
-    }
-    return true
-  }
 
-    const isHeader = (row?: Row)=> {
+    watchEffect(() => {
+      if(tempTable.value.length === 0){
+        tempTable.value = [...props.table as Array<IRow>]
+        console.log("tempTable",tempTable.value)
+      }
+      
+    })
+    // onMounted(()=>{
+    //   console.log("props.table 2", table)
+    //   tempTable.value = table
+    //   console.log("tempTable",tempTable.value)
+    // })
+   
+   
+  const isHeader = (row?: Row)=>{
     return row?.rowType === ("Header" as unknown as RowType);
   }
 
@@ -92,15 +99,26 @@ export default defineComponent({
 
   }
   
-  const toggle_isOpen = (row:Row|any)=>{
+  const toggle_isOpen = (row:Row|any,rowIndex:number)=>{
     row.isOpen = !row.isOpen
     watch_val.value = !watch_val.value
+    
+    if(row.isOpen && row.childLength>0){
+      
+      tempTable!.value.splice(rowIndex+1,row.childLength)
+
+    }
+    else{
+      tempTable.value = [...props.table as Array<IRow>] 
+    }
+    console.log(tempTable)
     return row.isOpen
   }
   const filteredCells = (cells?: Array<any>)=> {
     return cells?.filter(item => true);
   }
   return {
+    tempTable,
     watch_val,
     isHeader,
     colspan,
@@ -110,7 +128,7 @@ export default defineComponent({
     show_button,
     toggle_isOpen,
     filteredCells,
-    collapse,
+    
   }
 
   // end of setup
@@ -143,4 +161,6 @@ table th {
 table tr:nth-child(even) {
   background-color: white;
 }
+
+
 </style>
