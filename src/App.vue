@@ -9,12 +9,16 @@ import { ref } from "vue";
 import GridTable from "./components/GridTable.vue"; // NOSONAR
 import stach from "./stach-sdk";
 
+interface ExtraIRow extends stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow{
+  isOpen?:boolean,
+  childLength?:number
+}
 type IRow =
-  | stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow[]
+  | ExtraIRow[]
   | null
   | undefined;
-  
-const table = ref<IRow|any>();
+
+const table = ref<IRow>();
 
 // fetch data from the server
 fetch("http://localhost:3000/data")
@@ -23,16 +27,21 @@ fetch("http://localhost:3000/data")
     const pkg =
       stach.factset.protobuf.stach.v2.RowOrganizedPackage.create(data);
     table.value = pkg.tables.main.data?.rows;
+    if(table.value === undefined || table.value === null){
+      console.log("table is empty")
+    }
+  else{
     //add isOpen every element of table
-    table.value?.forEach((item:any)=>{
+    table.value?.forEach((item:ExtraIRow)=>{
       item["isOpen"] = false
     })
     //add childlength to each row according to grouplevel property 
-    table.value?.forEach((item:any,index:number)=>{
+    table.value?.forEach((item:ExtraIRow,index:number)=>{
       item["childLength"] = 0
       if(!item.cellDetails?.[0].groupLevel){
-
-        for(let i = index+1;i<table.value.length;i++){
+        if(!table.value)
+        return
+        for(let i = index+1;i<table.value.length ;i++){
           if(table.value[i].cellDetails?.[0].groupLevel){
             if(table.value[i].cellDetails?.[0].groupLevel === 1)
           item["childLength"] += 1
@@ -44,9 +53,8 @@ fetch("http://localhost:3000/data")
       }
       
     })
-    
+  }
 
-    console.log(table.value);
   });
 
 </script>

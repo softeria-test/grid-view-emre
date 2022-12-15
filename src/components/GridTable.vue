@@ -1,13 +1,13 @@
 <template>
 <div>
-  <table v-if="tempTable">
+  <table v-if="collapseTable">
     <caption>
       GridTable
     </caption>
     <th></th>
 
     <tr
-      v-for="(row, rowIndex) in tempTable"
+      v-for="(row, rowIndex) in collapseTable"
       :key="rowIndex"
       :class="{ header: isHeader(row) }"
     >
@@ -40,8 +40,12 @@
 import { defineComponent, PropType, ref, watchEffect } from "vue";
 import stach from "../stach-sdk/stach";
 type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow;
+interface ExtraIRow extends stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow{
+  isOpen?:boolean,
+  childLength?:number
+}
 type IRow =
-  | stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow[]
+  | ExtraIRow[]
   | null
   | undefined;
 
@@ -54,20 +58,23 @@ export default defineComponent({
   setup(props,context){
     console.log("context",context);
     console.log("props.table", props.table)
-    let tempTable= ref<IRow|any>([])
+    let collapseTable= ref<IRow>([])
     const watch_val = ref(false);
 
     watchEffect(() => {
-      if(tempTable.value.length === 0){
-        tempTable.value = [...props.table as Array<IRow>]
-        console.log("tempTable",tempTable.value)
+      if(!collapseTable.value)
+      return
+      
+      if(collapseTable.value.length === 0){
+        collapseTable.value = [...props.table as Array<Row>]
+        console.log("collapseTable",collapseTable.value)
       }
       
     })
     // onMounted(()=>{
     //   console.log("props.table 2", table)
-    //   tempTable.value = table
-    //   console.log("tempTable",tempTable.value)
+    //   collapseTable.value = table
+    //   console.log("collapseTable",collapseTable.value)
     // })
    
    
@@ -99,26 +106,32 @@ export default defineComponent({
 
   }
   
-  const toggle_isOpen = (row:Row|any,rowIndex:number)=>{
+  const toggle_isOpen = (row:ExtraIRow,rowIndex:number)=>{
     row.isOpen = !row.isOpen
     watch_val.value = !watch_val.value
-    
+
+    if(!row.childLength)
+    return
+
+    if(!collapseTable.value)
+    return
     if(row.isOpen && row.childLength>0){
       
-      tempTable!.value.splice(rowIndex+1,row.childLength)
+
+      collapseTable.value.splice(rowIndex+1,row.childLength)
 
     }
     else{
-      tempTable.value = [...props.table as Array<IRow>] 
+      collapseTable.value = [...props.table as Array<Row>] 
     }
-    console.log(tempTable)
+    console.log(collapseTable)
     return row.isOpen
   }
-  const filteredCells = (cells?: Array<any>)=> {
-    return cells?.filter(item => true);
+  const filteredCells = (cells?: Array<IRow>)=> {
+    return cells;
   }
   return {
-    tempTable,
+    collapseTable,
     watch_val,
     isHeader,
     colspan,
