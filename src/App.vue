@@ -31,12 +31,9 @@ fetch("http://localhost:3000/data")
       console.log("table is empty")
     }
   else{
-    //add isOpen every element of table
-    table.value?.forEach((item:ExtraIRow)=>{
+    //add isOpen and childLength every element of table
+    table.value?.forEach((item:ExtraIRow, index:number)=>{
       item["isOpen"] = false
-    })
-    //add childlength to each row according to grouplevel property 
-    table.value?.forEach((item:ExtraIRow,index:number)=>{
       item["childLength"] = 0
       if(!item.cellDetails?.[0].groupLevel){
         if(!table.value)
@@ -51,8 +48,9 @@ fetch("http://localhost:3000/data")
           }
         }
       }
-      
+
     })
+    
   }
 
   });
