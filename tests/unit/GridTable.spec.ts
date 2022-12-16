@@ -8,10 +8,15 @@ import stach from '@/stach-sdk/stach'
 
 
 describe('GridTable.vue', () => {
+  interface ExtraIRow extends stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow{
+    isOpen?:boolean,
+    childLength?:number
+  }
   type IRow =
-    | stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow[]
+    | ExtraIRow[]
     | null
     | undefined;
+
   const table = ref<IRow>();
   let wrapper: Wrapper<Vue>;
 

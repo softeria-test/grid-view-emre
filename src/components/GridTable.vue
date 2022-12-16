@@ -25,7 +25,7 @@
           v-bind:style="{
             'padding-left': groupLevel(row, parseInt(colIndex)) + 'em',
           }"
-        ><button  v-if="show_button(row,parseInt(colIndex), rowIndex)" @click="toggle_isOpen(row,rowIndex)">{{ row.isOpen ? '-' : '+' }}</button>
+        ><button :id="button_id(rowIndex)" v-if="show_button(row,parseInt(colIndex), rowIndex)" @click="toggle_isOpen(row,rowIndex)">{{ row.isOpen ? '-' : '+' }}</button>
           {{ value }}
         </div>
       </td>
@@ -77,7 +77,9 @@ export default defineComponent({
     //   console.log("collapseTable",collapseTable.value)
     // })
    
-   
+  const button_id = (rowIndex:number)=>{
+    return "button_"+rowIndex
+  }   
   const isHeader = (row?: Row)=>{
     return row?.rowType === ("Header" as unknown as RowType);
   }
@@ -141,6 +143,7 @@ export default defineComponent({
     show_button,
     toggle_isOpen,
     filteredCells,
+    button_id
     
   }
 
