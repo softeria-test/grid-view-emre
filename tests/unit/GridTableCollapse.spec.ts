@@ -21,25 +21,25 @@ describe("GridTable Expand/Collapse functionality", () => {
         );
         table.value = pkg.tables.main.data?.rows;
 
-        //add isOpen every element of table
-        table.value?.forEach((item: ExtraIRow) => {
-            item["isOpen"] = false;
-        });
-        //add childlength to each row according to grouplevel property
+        //add isOpen and childLength every element of table    
         table.value?.forEach((item: ExtraIRow, index: number) => {
-            item["childLength"] = 0;
+            item["isOpen"] = false
+            item["childLength"] = 0
             if (!item.cellDetails?.[0].groupLevel) {
-                if (!table.value) return;
+                if (!table.value)
+                    return
                 for (let i = index + 1; i < table.value.length; i++) {
                     if (table.value[i].cellDetails?.[0].groupLevel) {
                         if (table.value[i].cellDetails?.[0].groupLevel === 1)
-                            item["childLength"] += 1;
-                    } else {
-                        break;
+                            item["childLength"] += 1
+                    }
+                    else {
+                        break
                     }
                 }
             }
-        });
+
+        })
 
         wrapper = shallowMount(GridTable as any, {
             propsData: {

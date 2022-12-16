@@ -25,14 +25,14 @@
           v-bind:style="{
             'padding-left': groupLevel(row, parseInt(colIndex)) + 'em',
           }"
-        ><button :id="button_id(rowIndex)" v-if="show_button(row,parseInt(colIndex), rowIndex)" @click="toggle_isOpen(row,rowIndex)">{{ row.isOpen ? '-' : '+' }}</button>
+        ><button :id="buttonId(rowIndex)" v-if="showButton(row,parseInt(colIndex), rowIndex)" @click="toggle_isOpen(row,rowIndex)">{{ row.isOpen ? '-' : '+' }}</button>
           {{ value }}
         </div>
       </td>
     </tr>
   </table>
   <p v-if="false">
-  {{watch_val}} 
+  {{watchVal}} 
   </p>
 </div>
 </template>
@@ -59,7 +59,7 @@ export default defineComponent({
     console.log("context",context);
     console.log("props.table", props.table)
     let collapseTable= ref<IRow>([])
-    const watch_val = ref(false);
+    const watchVal = ref(false);
 
     watchEffect(() => {
       if(!collapseTable.value)
@@ -71,13 +71,8 @@ export default defineComponent({
       }
       
     })
-    // onMounted(()=>{
-    //   console.log("props.table 2", table)
-    //   collapseTable.value = table
-    //   console.log("collapseTable",collapseTable.value)
-    // })
-   
-  const button_id = (rowIndex:number)=>{
+    
+  const buttonId = (rowIndex:number)=>{
     return "button_"+rowIndex
   }   
   const isHeader = (row?: Row)=>{
@@ -103,14 +98,14 @@ export default defineComponent({
     return type === "vertical" ? ("baseline" as const) : ("left" as const);
   }
 
-  const show_button = (row: Row, colIndex: number, rowIndex: number) =>{
+  const showButton = (row: Row, colIndex: number, rowIndex: number) =>{
     return groupLevel(row,colIndex) === 0 && colIndex === 0 && [0,1,2].includes(rowIndex) === false
 
   }
   
   const toggle_isOpen = (row:ExtraIRow,rowIndex:number)=>{
     row.isOpen = !row.isOpen
-    watch_val.value = !watch_val.value
+    watchVal.value = !watchVal.value
 
     if(!row.childLength)
     return
@@ -134,16 +129,16 @@ export default defineComponent({
   }
   return {
     collapseTable,
-    watch_val,
+    watchVal,
     isHeader,
     colspan,
     rowspan,
     groupLevel,
     alignment,
-    show_button,
+    showButton,
     toggle_isOpen,
     filteredCells,
-    button_id
+    buttonId
     
   }
 
