@@ -18,7 +18,7 @@ type IRow =
   | null
   | undefined;
 
-const table = ref<IRow>();
+const table = ref<IRow>([]);
 
 // fetch data from the server
 fetch("http://localhost:3000/data")
@@ -28,6 +28,7 @@ fetch("http://localhost:3000/data")
       stach.factset.protobuf.stach.v2.RowOrganizedPackage.create(data);
     table.value = pkg.tables.main.data?.rows;
     if(table.value === undefined || table.value === null){
+      table.value=[];
       console.log("table is empty")
     }
   else{

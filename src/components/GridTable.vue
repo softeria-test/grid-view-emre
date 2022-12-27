@@ -37,8 +37,9 @@
 </div>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, ref, watchEffect } from "vue";
+import { defineComponent, PropType, watchEffect } from "vue";
 import stach from "../stach-sdk/stach";
+import expandCollapse from "./features/expandCollapse"
 type Row = stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow;
 interface ExtraIRow extends stach.factset.protobuf.stach.v2.RowOrganizedPackage.IRow{
   isOpen?:boolean,
@@ -55,23 +56,19 @@ export default defineComponent({
     table: Array as PropType<IRow>
   },
 
-  setup(props,context){
-    console.log("context",context);
-    console.log("props.table", props.table)
-    let collapseTable= ref<IRow>([])
-    const watchVal = ref(false);
-
+  setup(props){
+    const { collapseTable,watchVal, toggle_isOpen} = expandCollapse(props)
     watchEffect(() => {
-      if(!collapseTable.value)
-      return
+        if(!collapseTable.value)
+        return
+        
+        if(collapseTable.value.length === 0){
+          collapseTable.value = [...props.table as Array<Row>]
+          console.log("collapseTableWatchEffect",collapseTable.value)
+        }
+        
+      })
       
-      if(collapseTable.value.length === 0){
-        collapseTable.value = [...props.table as Array<Row>]
-        console.log("collapseTable",collapseTable.value)
-      }
-      
-    })
-    
   const buttonId = (rowIndex:number)=>{
     return "button_"+rowIndex
   }   
@@ -102,28 +99,7 @@ export default defineComponent({
     return groupLevel(row,colIndex) === 0 && colIndex === 0 && [0,1,2].includes(rowIndex) === false
 
   }
-  
-  const toggle_isOpen = (row:ExtraIRow,rowIndex:number)=>{
-    row.isOpen = !row.isOpen
-    watchVal.value = !watchVal.value
 
-    if(!row.childLength)
-    return
-
-    if(!collapseTable.value)
-    return
-    if(row.isOpen && row.childLength>0){
-      
-
-      collapseTable.value.splice(rowIndex+1,row.childLength)
-
-    }
-    else{
-      collapseTable.value = [...props.table as Array<Row>] 
-    }
-    console.log(collapseTable)
-    return row.isOpen
-  }
   const filteredCells = (cells?: Array<IRow>)=> {
     return cells;
   }
